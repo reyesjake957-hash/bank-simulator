@@ -1,26 +1,51 @@
-namespace ATMApp.Services
+using System;
+
+class BankingServices
 {
-    public static class BankingServices
+    public string AccountHolder { get; set; }
+    public double Balance { get; private set; }
+
+    public BankingServices(string accountHolder, double initialBalance = 0)
     {
-        // Option 1: Pass-by-value
-        public static double GetBalance(double balance)
-        {
-            return balance;
-        }
+        AccountHolder = accountHolder;
+        Balance = initialBalance;
+    }
 
-        // Option 2: ref (Deposit)
-        public static bool Deposit(ref double balance, double amount)
+    public void Deposit(double amount)
+    {
+        if (amount > 0)
         {
-            return false; //placeholder return value, replace with actual implementation
+            Balance += amount;
+            Console.WriteLine($"Deposited {amount}. New balance is {Balance}");
         }
+        else
+        {
+            Console.WriteLine("Deposit amount must be greater than zero.");
+        }
+    }
 
-        // Option 3: ref + out (Withdraw)
-        public static void Withdraw(
-            ref double balance,
-            double amount,
-            out bool isSuccessful)
+    public void Withdraw(double amount)
+    {
+        if (amount > 0)
         {
-            isSuccessful = false; //placeholder value, replace with actual implementation
+            if (amount <= Balance)
+            {
+                Balance -= amount;
+                Console.WriteLine($"Withdrew {amount}. New balance is {Balance}");
+            }
+            else
+            {
+                Console.WriteLine("Insufficient funds.");
+            }
         }
+        else
+        {
+            Console.WriteLine("Withdrawal amount must be greater than zero.");
+        }
+    }
+
+    public void CheckBalance()
+    {
+        Console.WriteLine($"Your current balance is {Balance}");
     }
 }
